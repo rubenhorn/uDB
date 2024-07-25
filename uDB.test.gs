@@ -3,37 +3,6 @@
 
 const testStore = "test-store";
 
-function beforeEach() {
-    new uDB(testStore).clear();
-}
-
-function afterEach() {
-    new uDB(testStore).clear();
-}
-
-function test(name, testFunc) {
-    beforeEach();
-    console.log(` - ${name}`);
-    testFunc();
-    afterEach();
-}
-
-function assertEqual(a, b) {
-    const jsonA = JSON.stringify(a);
-    const jsonB = JSON.stringify(b);
-    if (jsonA != jsonB) {
-        throw new Error(`Unexpected: ${jsonA} != ${jsonB}`);
-    }
-}
-
-function assertNotEqual(a, b) {
-    const jsonA = JSON.stringify(a);
-    const jsonB = JSON.stringify(b);
-    if (jsonA == jsonB) {
-        throw new Error(`Unexpected: ${jsonA} == ${jsonB}`);
-    }
-}
-
 function runTests() {
     console.log("Test the database:");
 
@@ -84,5 +53,44 @@ function runTests() {
         assertEqual(db.delete(docInserted._id).length, 0);
     });
 
+    test("List stores", () => {
+        const doc = { "foo": "bar" }
+        new uDB(testStore).put(doc);
+        const stores = uDB.getStores();
+        assertEqual(stores[0], testStore);
+        assertEqual(new uDB(stores[0]).getAll()[0].foo, doc.foo);
+    });
+
     console.log("All test passed. :)")
+}
+
+function beforeEach() {
+    new uDB(testStore).clear();
+}
+
+function afterEach() {
+    new uDB(testStore).clear();
+}
+
+function test(name, testFunc) {
+    beforeEach();
+    console.log(` - ${name}`);
+    testFunc();
+    afterEach();
+}
+
+function assertEqual(a, b) {
+    const jsonA = JSON.stringify(a);
+    const jsonB = JSON.stringify(b);
+    if (jsonA != jsonB) {
+        throw new Error(`Unexpected: ${jsonA} != ${jsonB}`);
+    }
+}
+
+function assertNotEqual(a, b) {
+    const jsonA = JSON.stringify(a);
+    const jsonB = JSON.stringify(b);
+    if (jsonA == jsonB) {
+        throw new Error(`Unexpected: ${jsonA} == ${jsonB}`);
+    }
 }

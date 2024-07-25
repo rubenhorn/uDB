@@ -5,6 +5,7 @@
 
 ## Usage:
 ```js
+console.log(`Existing stores: ${uDB.getStores()}`);
 const db = new uDB("my-doc-store"); // For Node.js and GAS, a corresponding JSON file is created in a data/ folder located next to the (uDB) script.
 const doc = { "foo": "bar" };
 let insertedDoc = db.put(doc);
@@ -16,9 +17,9 @@ console.log(`All documents after deleting ${insertedDoc._id}: ${db.delete(insert
 ```
 
 ## Testing
-**Node.js:** Run `npm test`.  
+**Node.js:** Run `npm install && npm test`.  
 **Browser:** Launch [test.html](./test.html) and open the console.  
-**GAS:**  Add [uDB.js](./uDB.js) and [uDB.test.gs](./uDB.test.gs) to the project and run the `runTests` function.
+**GAS:** Add [uDB.js](./uDB.js) and [uDB.test.gs](./uDB.test.gs) to the project and run the `runTests` function.
 
 ## Documentation
 The code is simple enough to not need documentation. Although I am planning to add some more helpful comments. &#128521;

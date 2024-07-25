@@ -59,4 +59,12 @@ describe("Test the database", () => {
     expect(db.getAll().length).toBe(1);
     expect(db.delete(docInserted._id).length).toBe(0);
   });
+
+  test("List stores", () => {
+    const doc = { "foo": "bar" }
+    new uDB(testStore).put(doc);
+    const stores = uDB.getStores();
+    expect(stores[0]).toBe(testStore);
+    expect(new uDB(stores[0]).getAll()[0].foo).toBe(doc.foo);
+  });
 });
