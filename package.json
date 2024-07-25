@@ -1,0 +1,16 @@
+{
+  "name": "micro-db",
+  "version": "0.1.0",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Ruben Horn",
+  "license": "GPLV3",
+  "description": "A tiny document database for browsers, Node.js, and Google Apps Script, but for micro projects only.",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "dependencies": {
+    "node-localstorage": "^3.0.5"
+  }
+}
