@@ -16,6 +16,9 @@ console.log(`All documents: ${db.getAll()}`);
 console.log(`All documents after deleting ${insertedDoc._id}: ${db.delete(insertedDoc._id)}`);
 ```
 
+## API:
+The [GAS](./api.gs) and [Node.js](./api.js) API responses comply with the [JSend specification](https://github.com/omniti-labs/jsend) and can be used with the provided [client](./client.js).
+
 ## Testing
 **Node.js:** Run `npm install && npm test`.  
 **Browser:** Launch [test.html](./test.html) and open the console.  

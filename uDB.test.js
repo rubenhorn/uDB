@@ -1,6 +1,6 @@
 "use strict";
 
-const uDB = require("./uDB")
+const uDB = require("./uDB");
 
 const testStore = "test-store";
 

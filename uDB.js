@@ -110,7 +110,7 @@ class uDB {
       };
 
       const fileExtension = ".json";
-      const mimeType = "text/json";
+      const mimeType = "application/json";
       let file = store;
       if (!file.endsWith(fileExtension)) file += fileExtension;
 
@@ -152,6 +152,7 @@ class uDB {
     });
 
     this.put = (doc) => doWithLock(() => {
+      if (typeof doc !== "object") throw Error('Document must be of type "object"')
       const doc2 = JSON.parse(JSON.stringify(doc)); // Deep copy to avoid side effects
       if (!doc2.hasOwnProperty("_id")) doc2._id = generateId();
       else this.delete(doc2._id);

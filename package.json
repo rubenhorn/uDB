@@ -2,7 +2,7 @@
   "name": "micro-db",
   "version": "0.1.0",
   "scripts": {
-    "test": "jest"
+    "test": "([ -z \"$API_URL\" ] && (read -p \"uDB API URL with API key (empty if not deployed): \" API_URL && export API_URL)); jest"
   },
   "author": "Ruben Horn",
   "license": "GPLV3",
@@ -11,6 +11,7 @@
     "jest": "^29.7.0"
   },
   "dependencies": {
+    "node-fetch": "^2.7.0",
     "node-localstorage": "^3.0.5"
   }
 }
