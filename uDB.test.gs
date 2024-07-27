@@ -1,4 +1,3 @@
-
 "use strict";
 
 const testStore = "test-store";
@@ -13,7 +12,7 @@ function runTests() {
     test("Insert documents", () => {
         const db = new uDB(testStore);
         assertEqual(db.getAll().length, 0);
-        const doc = { "foo": "bar" }
+        const doc = { foo: "bar" };
         const docInserted = db.put(doc);
         assertEqual(db.getAll().length, 1);
         const docInserted2 = db.put(doc);
@@ -26,10 +25,10 @@ function runTests() {
     test("Update document", () => {
         const db = new uDB(testStore);
         assertEqual(db.getAll().length, 0);
-        const doc = { "foo": "bar" }
+        const doc = { foo: "bar" };
         let docInserted = db.put(doc);
         assertEqual(db.getAll().length, 1);
-        docInserted.foo = "bazz"
+        docInserted.foo = "bazz";
         const docInserted2 = db.put(docInserted);
         assertEqual(db.getAll().length, 1);
         assertEqual(docInserted._id, docInserted2._id);
@@ -38,7 +37,7 @@ function runTests() {
     test("Find document", () => {
         const db = new uDB(testStore);
         assertEqual(db.getAll().length, 0);
-        const doc = { "foo": "bar" }
+        const doc = { foo: "bar" };
         let docInserted = db.put(doc);
         assertEqual(db.get(docInserted._id), docInserted);
         assertEqual(db.get("no-such-id"), null);
@@ -47,21 +46,21 @@ function runTests() {
     test("Delete document", () => {
         const db = new uDB(testStore);
         assertEqual(db.getAll().length, 0);
-        const doc = { "foo": "bar" }
+        const doc = { foo: "bar" };
         let docInserted = db.put(doc);
         assertEqual(db.getAll().length, 1);
         assertEqual(db.delete(docInserted._id).length, 0);
     });
 
     test("List stores", () => {
-        const doc = { "foo": "bar" }
+        const doc = { foo: "bar" };
         new uDB(testStore).put(doc);
         const stores = uDB.getStores();
         assertEqual(stores[0], testStore);
         assertEqual(new uDB(stores[0]).getAll()[0].foo, doc.foo);
     });
 
-    console.log("All test passed. :)")
+    console.log("All test passed. :)");
 }
 
 function beforeEach() {

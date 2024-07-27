@@ -1,17 +1,23 @@
 {
-  "name": "micro-db",
-  "version": "0.1.0",
-  "scripts": {
-    "test": "([ -z \"$API_URL\" ] && (read -p \"uDB API URL with API key (empty if not deployed): \" API_URL && export API_URL)); jest"
-  },
-  "author": "Ruben Horn",
-  "license": "GPLV3",
-  "description": "A tiny document database for browsers, Node.js, and Google Apps Script, but for micro projects only.",
-  "devDependencies": {
-    "jest": "^29.7.0"
-  },
-  "dependencies": {
-    "node-fetch": "^2.7.0",
-    "node-localstorage": "^3.0.5"
-  }
+    "name": "micro-db",
+    "version": "0.1.0",
+    "scripts": {
+        "format": "prettier . --write",
+        "lint": "eslint",
+        "test": "npm run lint || exit 1; ([ -z \"$API_URL\" ] && (read -p \"uDB API URL with API key (empty if not deployed): \" API_URL && export API_URL)); jest"
+    },
+    "author": "Ruben Horn",
+    "license": "GPLV3",
+    "description": "A tiny document database for browsers, Node.js, and Google Apps Script, but for micro projects only.",
+    "devDependencies": {
+        "@eslint/js": "^9.8.0",
+        "eslint": "^9.8.0",
+        "globals": "^15.8.0",
+        "jest": "^29.7.0",
+        "prettier": "^3.3.3"
+    },
+    "dependencies": {
+        "node-fetch": "^2.7.0",
+        "node-localstorage": "^3.0.5"
+    }
 }
