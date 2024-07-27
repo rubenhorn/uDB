@@ -9,12 +9,14 @@ const apiUrl = (() => {
     let apiUrl = (process.env["API_URL"] || "").trim();
     if (apiUrl.length === 0) apiUrl = null;
     if (apiUrl == null) {
-        console.log("Skipping API tests");
+        console.log(
+            'Environment variable "API_URL" not set (Skipping client tests)'
+        );
     }
     return apiUrl;
 })();
 
-describe("Test the database", () => {
+describe("Test the database and client", () => {
     const testAPI = (name, func) => {
         if (apiUrl != null) {
             test(name, func, timeoutSeconds * 1000);

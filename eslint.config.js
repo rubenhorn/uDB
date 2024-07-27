@@ -26,7 +26,6 @@ module.exports = [
     {
         rules: {
             "no-prototype-builtins": "off",
-            quotes: ["error", "double"],
         },
     },
 ];

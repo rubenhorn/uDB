@@ -4,7 +4,9 @@
     "scripts": {
         "format": "prettier . --write",
         "lint": "eslint",
-        "test": "npm run lint || exit 1; ([ -z \"$API_URL\" ] && (read -p \"uDB API URL with API key (empty if not deployed): \" API_URL && export API_URL)); jest"
+        "start": "API_KEY=mySecret node api.js",
+        "test": "npm run lint && jest",
+        "testApi": "npm run lint && { npm start & } && sleep 1 && API_URL='http://localhost:8080?api_key=mySecret' jest -t 'Test the database and client'; kill %1"
     },
     "author": "Ruben Horn",
     "license": "GPLV3",

@@ -43,7 +43,7 @@ To deploy on GAS, create a new project using [appsscript.json](./appsscript.json
 
 ## Testing
 
-**Node.js:** Run `npm install && npm test`.  
+**Node.js:** Run `npm install && npm test`. To test the API, use `npm run testApi`, which starts both the server using `npm start` and runs the client tests.  
 **Browser:** Launch [uDB.test.html](./uDB.test.html) and open the console or use [client.test.html](./client.test.html) for the API client instead.  
 **GAS:** Add [uDB.js](./uDB.js) and [uDB.test.gs](./uDB.test.gs) to the project and run the `runTests` function.
 
