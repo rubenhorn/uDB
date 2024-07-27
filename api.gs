@@ -27,7 +27,7 @@ function doPost(request) {
                 "data": { "store": 'Missing URL parameter "store"' }
             });
         const id = request.parameter["id"];
-        if (id != null && request.postData.length > 0)
+        if (id != null && request.postData != null && request.postData.contents.trim().length > 0)
             return makeResponse({
                 "status": "fail",
                 "data": { "id": 'URL parameter "id" may not be given with document in body' }
@@ -39,7 +39,6 @@ function doPost(request) {
         else {
             let doc = null;
             try {
-                if (request.postData.type != "application/json") throw Error("Invalid content type")
                 doc = JSON.parse(request.postData.contents);
             }
             catch {

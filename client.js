@@ -16,11 +16,12 @@ const fetch = (() => {
 
 class uDBClient {
     constructor(url) {
-        const jsendRequest = (url, body) => new Promise((resolve, reject) => {
+        const jsendRequest = (url, method, body) => new Promise((resolve, reject) => {
+            if (method === "GET" || method === "HEAD") body = null;
+            else body = body != null ? JSON.stringify(body) : ""
             fetch(url, {
-                method: body != null ? "POST" : "GET",
-                headers: { "Content-Type": "application/json; charset=UTF-8" },
-                body: (body != null && body.trim().length > 0) ? JSON.stringify(body) : null,
+                method: method,
+                body: body,
                 redirect: "follow",
             }).then(async (httpResponse) => {
                 try {
@@ -38,21 +39,39 @@ class uDBClient {
             }, reject);
         });
 
-        const sendApiRequest = (store, id, doc) => new Promise((resolve, reject) => {
+        const sendApiGetRequest = (store, id, doc) => new Promise((resolve, reject) => {
             let requestUrl = url;
             if (store != null) requestUrl += `&store=${store}`;
             if (id != null) requestUrl += `&id=${id}`;
-            return jsendRequest(requestUrl, doc).then(resolve, reject);
+            return jsendRequest(requestUrl, "GET", doc).then(resolve, reject);
+        });
+
+        const sendApiPostRequest = (store, id, doc) => new Promise((resolve, reject) => {
+            let requestUrl = url;
+            if (store != null) requestUrl += `&store=${store}`;
+            if (id != null) requestUrl += `&id=${id}`;
+            return jsendRequest(requestUrl, "POST", doc).then(resolve, reject);
         });
 
         // Public functions
-        this.getStores = () => sendApiRequest(null, null, null);
+        this.getStores = () => sendApiGetRequest(null, null, null);
         this.store = (store) => {
-            this.getAll = () => sendApiRequest(store, null, null);
-            this.get = (id) => sendApiRequest(store, id, null);
-            this.put = (doc) => sendApiRequest(store, null, doc);
-            this.delete = (id) => sendApiRequest(store, id, null);
-            this.clear = () => sendApiRequest(store, null, "");
+            this.getAll = () => sendApiGetRequest(store, null, null);
+
+            this.get = async (id) => {
+                if (typeof id != "string") throw new Error('id must be of type "string"');
+                return await sendApiGetRequest(store, id, null);
+            }
+            this.put = async (doc) => {
+                if (doc == null || typeof doc != "object") throw new Error('doc must be of type "object" and not "null"');
+                return await sendApiPostRequest(store, null, doc);
+            }
+            this.delete = async (id) => {
+                if (typeof id != "string") throw new Error('id must be of type "string"');
+                return await sendApiPostRequest(store, id, null);
+            }
+
+            this.clear = () => sendApiPostRequest(store, null);
             return this;
         };
     }

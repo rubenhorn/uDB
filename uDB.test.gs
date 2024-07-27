@@ -73,8 +73,8 @@ function afterEach() {
 }
 
 function test(name, testFunc) {
-    beforeEach();
     console.log(` - ${name}`);
+    beforeEach();
     testFunc();
     afterEach();
 }

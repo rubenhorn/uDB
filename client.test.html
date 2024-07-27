@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<head>
+    <title>uDB browser test</title>
+    <script src="./client.js"></script>
+</head>
+
+<body>
+    <h1>Test results are displayed in the console.</h1>
+    <input type="text" placeholder="uDB API URL with API key" id="apiUrl" style="width: 95%;" />
+    <br />
+    <br />
+    <button onclick="runTests();">Run tests</button>
+    <script>
+        "use strict";
+
+        const testStore = "test-store";
+
+        async function runTests() {
+            console.log("Test the database:");
+
+            window.apiUrl = document.getElementById("apiUrl").value;
+
+            await test("List empty store", async () => {
+                const db = new uDBClient(apiUrl).store(testStore);
+                assertEqual(await db.getAll(), []);
+            });
+
+            await test("Insert documents", async () => {
+                const db = new uDBClient(apiUrl).store(testStore);
+                assertEqual((await db.getAll()).length, 0);
+                const doc = { "foo": "bar" }
+                const docInserted = await db.put(doc);
+                assertEqual((await db.getAll()).length, 1);
+                const docInserted2 = await db.put(doc);
+                assertEqual((await db.getAll()).length, 2);
+                assertEqual(docInserted.foo, doc.foo);
+                assertEqual(docInserted2.foo, doc.foo);
+                assertNotEqual(docInserted._id, docInserted2._id);
+            });
+
+            await test("Update document", async () => {
+                const db = new uDBClient(apiUrl).store(testStore);
+                assertEqual((await db.getAll()).length, 0);
+                const doc = { "foo": "bar" }
+                let docInserted = await db.put(doc);
+                assertEqual((await db.getAll()).length, 1);
+                docInserted.foo = "bazz"
+                const docInserted2 = await db.put(docInserted);
+                assertEqual((await db.getAll()).length, 1);
+                assertEqual(docInserted._id, docInserted2._id);
+            });
+
+            await test("Find document", async () => {
+                const db = new uDBClient(apiUrl).store(testStore);
+                assertEqual((await db.getAll()).length, 0);
+                const doc = { "foo": "bar" }
+                let docInserted = await db.put(doc);
+                assertEqual(await db.get(docInserted._id), docInserted);
+                assertEqual(await db.get("no-such-id"), null);
+            });
+
+            await test("Delete document", async () => {
+                const db = new uDBClient(apiUrl).store(testStore);
+                assertEqual((await db.getAll()).length, 0);
+                const doc = { "foo": "bar" }
+                let docInserted = await db.put(doc);
+                assertEqual((await db.getAll()).length, 1);
+                assertEqual((await db.delete(docInserted._id)).length, 0);
+            });
+
+            await test("List stores", async () => {
+                const doc = { "foo": "bar" }
+                const db = await new uDBClient(apiUrl).store(testStore)
+                await db.put(doc);
+                const stores = await new uDBClient(apiUrl).getStores();
+                assertEqual(stores[0], testStore);
+                assertEqual((await new uDBClient(apiUrl).store(stores[0]).getAll())[0].foo, doc.foo);
+            });
+
+            console.log("All test passed. :)")
+        }
+
+        async function beforeEach() {
+            await new uDBClient(apiUrl).store(testStore).clear();
+        }
+
+        async function afterEach() {
+            await new uDBClient(apiUrl).store(testStore).clear();
+        }
+
+        async function test(name, asyncTestFunc) {
+            console.log(` - ${name}`);
+            await beforeEach();
+            await asyncTestFunc();
+            await afterEach();
+        }
+
+        function assertEqual(a, b) {
+            const jsonA = JSON.stringify(a);
+            const jsonB = JSON.stringify(b);
+            if (jsonA != jsonB) {
+                throw new Error(`Unexpected: ${jsonA} != ${jsonB}`);
+            }
+        }
+
+        function assertNotEqual(a, b) {
+            const jsonA = JSON.stringify(a);
+            const jsonB = JSON.stringify(b);
+            if (jsonA == jsonB) {
+                throw new Error(`Unexpected: ${jsonA} == ${jsonB}`);
+            }
+        }
+    </script>
+</body>
