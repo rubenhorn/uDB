@@ -4,7 +4,7 @@
 
 **Note!** On GAS it is extreeeemly slow.
 
-## Usage:
+## Usage
 
 ```js
 console.log(`Existing stores: ${uDB.getStores()}`);
@@ -20,7 +20,7 @@ console.log(
 );
 ```
 
-## API:
+## API
 
 The [GAS API](./api.gs) and [Node.js API](./api.js) responses comply with the [JSend specification](https://github.com/omniti-labs/jsend) and can be used with the provided [client](./client.js).
 
